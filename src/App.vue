@@ -96,7 +96,7 @@ export default {
         {
           "slug": "000",
           "name": "Gatecrasher",
-          "status": "pending"
+          "status": "start"
         },
       ],
       "pilots": [
@@ -106,7 +106,7 @@ export default {
           "code": "missing-data",
           "corpro": "",
           "frame": "",
-          "mech": ""
+          "mech": "placeholder.png"
         },
       ],
       "header": {
