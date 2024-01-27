@@ -91,10 +91,20 @@ export default {
     return {
       "mission_slug": "000",
       "current_md": "",
-      "events": "",
+      "events": "001.md",
       "missions": [
         {
           "slug": "000",
+          "name": "Gatecrasher",
+          "status": "success"
+        },
+        {
+          "slug": "001",
+          "name": "Bug-Hunt",
+          "status": "failure"
+        },
+        {
+          "slug": "002",
           "name": "Gatecrasher",
           "status": "start"
         },
@@ -104,8 +114,8 @@ export default {
           "callsign": "placeholder",
           "alias": "placeholder",
           "code": "missing-data",
-          "corpro": "",
-          "frame": "",
+          "corpro": "placeholder.png",
+          "frame": "placeholder.png",
           "mech": "placeholder.png"
         },
       ],
