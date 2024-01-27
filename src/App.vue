@@ -91,23 +91,23 @@ export default {
     return {
       "mission_slug": "000",
       "current_md": "",
-      "events": "001.md",
+      "events": "000",
       "missions": [
         {
           "slug": "000",
           "name": "Gatecrasher",
           "status": "success"
         },
-        {
-          "slug": "001",
-          "name": "Bug-Hunt",
-          "status": "failure"
-        },
-        {
-          "slug": "002",
-          "name": "Gatecrasher",
-          "status": "start"
-        },
+        //{
+        //  "slug": "001",
+        //  "name": "Bug-Hunt",
+        //  "status": "failure"
+        //},
+        //{
+        //  "slug": "002",
+        //  "name": "Gatecrasher",
+        //  "status": "start"
+        //},
       ],
       "pilots": [
         {
