@@ -142,15 +142,15 @@ export default {
         },
       ],
       "header": {
-        "planet": "Hercynia",
-        "year": "5014u",
+        "planet": "Cressidium",
+        "year": "5016u",
         "system": "Ardennes-3",
         "gate": "Atlas-Quanokrim",
-        "ring": "Atlas-Line",
-        "headerTitle": "Mirrorsmoke",
-        "headerSubtitle": "Mercenary Company",
-        "subheaderTitle": "Crisis Response",
-        "subheaderSubtitle": "Delta-Echo-Echo-Zulu",
+        "ring": "Cascade-Line",
+        "headerTitle": "Union Navy",
+        "headerSubtitle": "UNS-CV Rio Grande",
+        "subheaderTitle": "Diplomatic Escort",
+        "subheaderSubtitle": "Zulu-Delta-Echo-Charlie",
       },
       "options":{
         "eventsMarkdownPerMission": true
