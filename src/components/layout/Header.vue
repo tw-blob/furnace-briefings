@@ -15,7 +15,7 @@
     </div>
     <div class="rhombus">&nbsp;</div>
     <video autoplay muted loop width="90px" height="90px">
-      <source src="/planet.gif" type="video/gif" />
+      <source src="/planet.mp4" type="video/mp4" />
     </video>
     <div class="location-info">
       <div class="location-row" id="planet-year">

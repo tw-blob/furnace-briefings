@@ -114,16 +114,16 @@ export default {
           "callsign": "placeholder",
           "alias": "placeholder",
           "code": "missing-data",
-          "corpro": "placeholder.png",
-          "frame": "placeholder.png",
-          "mech": "placeholder.png"
+          "corpro": "missing-data",
+          "frame": "error",
+          "mech": "placeholder"
         },
       ],
       "header": {
         "planet": "Cressidium",
         "year": "5016u",
-        "system": "Ardennes-3",
-        "gate": "Atlas-Quanokrim",
+        "system": "Cronar",
+        "gate": "Rainier-Station",
         "ring": "Cascade-Line",
         "headerTitle": "Union Navy",
         "headerSubtitle": "UNS-CV Rio Grande",
