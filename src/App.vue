@@ -1,196 +1,179 @@
 <template>
-  <Header :header="this.header" />
-  <div class="content-container">
-    <section class="section-container" id="missions" style="width:435px; height:714px;">
-      <div class="section-header clipped-medium-backward">
-        <img src="/icons/mission-icon.svg" />
-        <h1>Mission Log</h1>
-      </div>
-      <div class="section-content-container">
-        <h3>Current Assignment</h3>
-        <Markdown :source="current_md" class="markdown" />
-        <h3>Mission List</h3>
-        <div class="mission-list-container">
-          <Mission
-            v-for="item in this.missions"
-            :key="item.slug"
-            :mission="item"
-            :selected="this.mission_slug"
-            @click="selectMission(item)"
-          />
-        </div>
-      </div>
-    </section>
-    <section class="section-container" id="events" style="width:435px; height:714px;">
-      <div class="section-header clipped-medium-backward">
-        <img src="/icons/events-icon.svg" />
-        <h1>Events Log</h1>
-      </div>
-      <div class="section-content-container">
-        <Markdown :source="events" class="markdown" />
-      </div>
-    </section>
-    <section class="section-container" id="pilots" style="width:894px; height:714px;">
-      <div style="height:52px; overflow:hidden;">
-        <div class="section-header clipped-medium-backward-pilot">
-          <img src="/icons/pilot-icon.svg" />
-          <h1>Pilot Roster</h1>
-        </div>
-        <div class="rhombus-back">&nbsp;</div>
-      </div>
-      <div class="section-content-container">
-        <div class="pilot-list-container">
-          <Pilot v-for="item in this.pilots" :key="item.slug" :pilot="item" />
-        </div>
-      </div>
-    </section>
-  </div>
-  <svg
-    style="visibility: hidden; position: absolute;"
-    width="0"
-    height="0"
-    xmlns="http://www.w3.org/2000/svg"
-    version="1.1"
-  >
-    <defs>
-      <filter id="round">
-        <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur" />
-        <feColorMatrix
-          in="blur"
-          mode="matrix"
-          values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -5"
-          result="goo"
-        />
-        <feComposite in="SourceGraphic" in2="goo" operator="atop" />
-      </filter>
-    </defs>
-  </svg>
-  <audio autoplay>
-    <source src="/startup.ogg" type="audio/ogg" />
-  </audio>
-  <Footer/>
+	<div class="page-wrapper">
+		<Header :planet-path="planetPath" :class="{ animate: animate }" :header="header" />
+		<Sidebar :animate="animate" :class="{ animate: animate }" />
+	</div>
+	<div id="router-view-container">
+		<router-view
+			:animate="animate"
+			:initial-slug="initialSlug"
+			:missions="missions"
+			:events="events"
+			:pilots="pilots"
+			:clocks="clocks"
+			:reserves="reserves"
+		/>
+	</div>
+	<svg
+		style="visibility: hidden; position: absolute"
+		width="0"
+		height="0"
+		xmlns="http://www.w3.org/2000/svg"
+		version="1.1"
+	>
+		<defs>
+			<filter id="round">
+				<feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur" />
+				<feColorMatrix
+					in="blur"
+					mode="matrix"
+					values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -5"
+					result="goo"
+				/>
+				<feComposite in="SourceGraphic" in2="goo" operator="atop" />
+			</filter>
+		</defs>
+	</svg>
+	<audio autoplay>
+		<source src="/startup.ogg" type="audio/ogg" />
+	</audio>
 </template>
 
 <script>
-import Header from './components/layout/Header.vue';
-import Footer from './components/layout/Footer.vue';
-import Mission from './components/Mission.vue';
-import Pilot from './components/Pilot.vue';
-import Markdown from 'vue3-markdown-it';
+import Header from "./components/layout/Header.vue";
+import Sidebar from "./components/layout/Sidebar.vue";
+import Config from "@/assets/info/general-config.json";
 
 export default {
-  components: {
-    Header,
-    Footer,
-    Mission,
-    Pilot,
-    Markdown
-  },
+	components: {
+		Header,
+		Sidebar,
+	},
 
-  data() {
-    return {
-      "mission_slug": "000",
-      "current_md": "",
-      "events": "000",
-      "missions": [
-        {
-          "slug": "000",
-          "name": "Gatecrasher",
-          "status": "success"
-        },
-        //{
-        //  "slug": "001",
-        //  "name": "Bug-Hunt",
-        //  "status": "failure"
-        //},
-        //{
-        //  "slug": "002",
-        //  "name": "Gatecrasher",
-        //  "status": "start"
-        //},
-      ],
-      "pilots": [
-        {
-          "callsign": "placeholder",
-          "alias": "placeholder",
-          "code": "missing-data",
-          "corpro": "missing-data",
-          "frame": "error",
-          "mech": "placeholder"
-        },
-      ],
-      "header": {
-        "planet": "Cressidium",
-        "year": "5016u",
-        "system": "Cronar",
-        "gate": "Rainier-Station",
-        "ring": "Cascade-Line",
-        "headerTitle": "Union Navy",
-        "headerSubtitle": "UNS-CV Rio Grande",
-        "subheaderTitle": "Diplomatic Escort",
-        "subheaderSubtitle": "Zulu-Delta-Echo-Charlie",
-      },
-      "options":{
-        "eventsMarkdownPerMission": true
-      }
-    }
-  },
-
-  created() {
-    this.loadMissionMarkdown()
-    this.loadEventsMarkdown()
-  },
-
-  computed: {
-
-  },
-
-  methods: {
-    selectMission(mission) {
-      this.mission_slug = mission.slug;
-      this.loadMissionMarkdown()
-      if(this.options.eventsMarkdownPerMission){
-        this.loadEventsMarkdown();
-      }
+	data() {
+		return {
+			animate: Config.animate,
+			initialSlug: Config.initialSlug,
+			planetPath: Config.planetPath,
+			header: Config.header,
+			pilotSpecialInfo: Config.pilotSpecialInfo,
+			clocks: [],
+			events: [],
+			missions: [],
+			pilots: [],
+			reserves: [],
+			bonds: [],
+		};
+	},
+	created() {
+    this.setTitleFavicon(Config.defaultTitle + " MISSION BRIEFING", Config.icon);
+		this.importMissions(import.meta.glob("@/assets/missions/*.md", { as: "raw" }));
+		this.importEvents(import.meta.glob("@/assets/events/*.md", { as: "raw" }));
+		this.importClocks(import.meta.glob("@/assets/clocks/*.json"));
+		this.importReserves(import.meta.glob("@/assets/reserves/*.json"));
+		this.importPilots(import.meta.glob("@/assets/pilots/*.json"));
+	},
+	mounted() {
+		this.$router.push("/status");
+	},
+	methods: {
+    setTitleFavicon(title, favicon) {
+      document.title = title;
+      let headEl = document.querySelector('head');
+      let faviconEl = document.createElement('link');
+      faviconEl.setAttribute('rel','shortcut icon');
+      faviconEl.setAttribute('href',favicon);
+      headEl.appendChild(faviconEl);
     },
-    loadMissionMarkdown() {
-      let self = this;
-      let md = `/missions/${self.mission_slug}.md`
-      var client = new XMLHttpRequest();
-      client.open('GET', md);
-      client.onreadystatechange = function () {
-        self.current_md = client.responseText;
-      }
-      client.send();
-    },
-    loadEventsMarkdown() {
-      let self = this;
-      let md = "";
+		async importMissions(files) {
+			let filePromises = Object.keys(files).map(path => files[path]());
+			let fileContents = await Promise.all(filePromises);
+			fileContents.forEach(content => {
+				let mission = {};
+				mission["slug"] = content.split("\n")[0];
+				mission["name"] = content.split("\n")[1];
+				mission["status"] = content.split("\n")[2];
+				mission["content"] = content.split("\n").splice(3).join("\n");
+				this.missions = [...this.missions, mission];
+			});
+		},
+		async importEvents(files) {
+			let filePromises = Object.keys(files).map(path => files[path]());
+			let fileContents = await Promise.all(filePromises);
+			fileContents.forEach(content => {
+				let event = {};
+				event["title"] = content.split("\n")[0];
+				event["location"] = content.split("\n")[1];
+				event["time"] = content.split("\n")[2];
+				event["thumbnail"] = content.split("\n")[3];
+				event["content"] = content.split("\n").splice(4).join("\n");
+				this.events = [...this.events, event];
+			});
+		},
+		async importClocks(files) {
+			let filePromises = Object.keys(files).map(path => files[path]());
+			let fileContents = await Promise.all(filePromises);
+			fileContents.forEach(content => {
+				this.clocks = JSON.parse(JSON.stringify(content)).default;
+			});
+		},
+		async importReserves(files) {
+			let filePromises = Object.keys(files).map(path => files[path]());
+			let fileContents = await Promise.all(filePromises);
+			fileContents.forEach(content => {
+				this.reserves = JSON.parse(JSON.stringify(content)).default;
+			});
+		},
+		async importPilots(files) {
+			let filePromises = Object.keys(files).map(path => files[path]());
+			let fileContents = await Promise.all(filePromises);
+			fileContents.forEach(content => {
+				var pilotFromJson = JSON.parse(JSON.stringify(content));
+				// In case the pilot was added from a copy on compcon via sharecode, remove the "reference mark" symbol
+				pilotFromJson.name = pilotFromJson.name.replace("※", "");
+				pilotFromJson.callsign = pilotFromJson.callsign.replace("※", "");
+				var pilotFromVue = this.pilotSpecialInfo[pilotFromJson.callsign.toUpperCase()];
+				var pilot = {
+					...pilotFromJson,
+					...pilotFromVue,
+				};
+				this.pilots = [...this.pilots, pilot];
+				pilot.clocks.forEach(content => {
+					let clock = {};
+					clock["type"] = `Pilot Project // ${pilot.callsign}`;
+					clock["result"] = "";
+					clock["name"] = content.title;
+					clock["description"] = content.description;
+					clock["value"] = content.progress;
+					clock["max"] = content.segments;
+					clock["color"] = "#3CB043";
+					this.clocks = [...this.clocks, clock];
+				});
 
-      if(self.options.eventsMarkdownPerMission){
-        md = `/events/${self.mission_slug}.md`
-      }
-      else {
-        md = "/events.md"
-      }
-
-      var client = new XMLHttpRequest();
-      client.open('GET', md);
-      client.onreadystatechange = function () {
-        self.events = client.responseText;
-      }
-      client.send();
-    }
-  }
-
-}
+				pilot.reserves.forEach(content => {
+					let reserve = {};
+					reserve["type"] = content.type;
+					reserve["name"] = content.name;
+					reserve["description"] = content.description;
+					reserve["label"] = content.label;
+					reserve["cost"] = content.cost;
+					reserve["notes"] = content.notes;
+					reserve["callsign"] = pilot.callsign.toUpperCase();
+					this.reserves = [...this.reserves, reserve];
+				});
+			});
+		},
+	},
+};
 </script>
 
-
-<style lang="scss">
+<style>
 #app {
-  width: 1902px;
-  height: 910px;
-  overflow: hidden;
+	width: 1901px;
+	/* height: 100%; */
+	min-height: 100vh;
+	overflow: hidden !important;
+	/* border-right: 1px solid #ff0;
+	border-bottom: 1px solid #ff0; */
 }
 </style>
